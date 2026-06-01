@@ -5,11 +5,11 @@ mod controller;
 mod config;
 mod repository;
 
-//cambiar por los controllers que tengas
-// use controller::pais_controller::pais_router;
-// use controller::persona_controller::persona_router;
 use controller::avion_controller::avion_router;
 use controller::pasajero_controller::pasajero_router;
+use controller::reserva_controller::reserva_router;
+use controller::aeropuerto_controller::aeropuerto_router;
+use controller::vuelo_controller::vuelo_router;
 
 use config::config::crear_pool;
 
@@ -36,5 +36,9 @@ async fn main() {
 fn unificar_routers(pool: sqlx::PgPool) -> axum::Router {
     let  router1 = avion_router(pool.clone());
     let router2 = pasajero_router(pool.clone());
-    router1.merge(router2)
+    let router3 = reserva_router(pool.clone());
+    let router4 = vuelo_router(pool.clone());
+    let router5 = aeropuerto_router(pool.clone());
+    router1.merge(router2).merge(router3).merge(router4).merge(router5)
+
 }
